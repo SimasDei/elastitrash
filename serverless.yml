@@ -1,0 +1,30 @@
+service: serverlessSetup
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+
+# functions
+functions:
+  main:
+    handler: src/functions/main.handler
+    events: # The events that trigger this function
+      - http:
+          path: graphql
+          method: post
+
+# Serverless plugins
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+# Resources your functions use
+resources:
+  Resources:
+    # SNS Topics
+    SNSHelloEvent:
+      Type: AWS::SNS::Topic
+      Properties:
+        DisplayName: GraphQL Event Topic
+        TopicName: gql-event
